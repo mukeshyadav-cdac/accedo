@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt-nodejs';
-import JWT from 'jsonwebtoken';
 import config from '../../config.js';
 
 const Schema = mongoose.Schema;
 
-const match = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-const userSchema = new Schema({
+const movieSchema = new Schema({
   email: {
     type: String,
     unique: true,
@@ -66,7 +62,7 @@ userSchema.methods.comparePassword = function(candidatePassword, callback){
 
 userSchema.virtual('auth_token')
   .get(function () {
-    return JWT.sign({id: this._id }, config[process.env.NODE_ENV].JWT_SECRET)
+    return JWT.sign(this._id, config[process.env.NODE_ENV].JWT_SECRET)
   });
 
 
