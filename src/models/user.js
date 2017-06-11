@@ -20,7 +20,11 @@ const userSchema = new Schema({
     type: String,
     required: 'Password must be present',
     minlength: [6, 'Password length should be minimum 6 character.']
-  }
+  },
+
+  history: [],
+
+  favourites: []
 });
 
 userSchema.options.toJSON = {

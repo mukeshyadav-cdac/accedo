@@ -44,4 +44,13 @@ let deleteMovie = (req, res) => {
   });
 }
 
+let addToHistory = (req, res) => {
+  let user = req.user;
+  user.history.push(req.params['id']);
+  user.save((err, user) => {
+    res.send({success: true});
+  });
+}
+
+
 export { listMovies, createMovie, filterMovies, deleteMovie };

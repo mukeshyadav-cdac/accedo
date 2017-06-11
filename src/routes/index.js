@@ -12,6 +12,8 @@ router.get('/', (req, res) => {
 
 router.post('/api/v1/sign_up', apiV1User.signUpUser);
 router.post('/api/v1/sign_in', apiV1User.signInUser);
+router.put('/api/v1/add_to_history/:id', passport.authenticate('jwt', { session: false }), apiV1User.addToHistory);
+router.put('/api/v1/add_to_favourite/:id', passport.authenticate('jwt', { session: false }), apiV1User.addToFavourite);
 
 router.get('/api/v1/movies', passport.authenticate('jwt', { session: false }), apiV1Movie.listMovies);
 router.get('/api/v1/movies/filter', passport.authenticate('jwt', { session: false }), apiV1Movie.filterMovies);

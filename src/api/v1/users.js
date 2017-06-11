@@ -29,4 +29,20 @@ let signInUser = (req, res) => {
   });
 }
 
-export { signUpUser, signInUser };
+let addToHistory = (req, res) => {
+  let user = req.user;
+  user.history.push(req.params['id']);
+  user.save((err, user) => {
+    res.send({success: true});
+  });
+}
+
+let addToFavourite = (req, res) => {
+  let user = req.user;
+  user.favourites.push(req.params['id']);
+  user.save((err, user) => {
+    res.send({success: true});
+  });
+}
+
+export { signUpUser, signInUser, addToHistory, addToFavourite };
