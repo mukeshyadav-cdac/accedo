@@ -11,6 +11,7 @@
   "author": "mukesh",
   "license": "ISC",
   "dependencies": {
+    "babel": "^6.23.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
