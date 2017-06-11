@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import config from '../../config.js';
+import textSearch from 'mongoose-text-search';
 
 const Schema = mongoose.Schema;
 
 const movieSchema = new Schema({
   title: {
-    type: String
+    type: String,
+    required: 'Title must be present',
   },
 
   description: {
@@ -44,12 +46,25 @@ const movieSchema = new Schema({
 
 movieSchema.options.toJSON = {
     transform: function(doc, ret, options) {
-        ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
+        ['categories', 'images', 'parentalRatings', 'credits', 'contents', 'metadata'].forEach((_type) => {
+          ret[_type].forEach((doc) => {
+            delete doc._id;
+          })
+        })
         return ret;
     }
 };
+
+movieSchema.plugin(textSearch);
+movieSchema.index({
+  title: 'text',
+  description: 'text',
+  'categories.title': 'text',
+  'categories.description': 'text',
+  'credits.name': 'text'
+});
 
 const Movie = mongoose.model('movie', movieSchema);
 

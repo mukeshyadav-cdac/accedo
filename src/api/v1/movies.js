@@ -24,4 +24,24 @@ let createMovie = (req, res) => {
   });
 }
 
-export { listMovies, createMovie };
+let filterMovies = (req, res) => {
+  let movies = Movie.find({ $text: { $search: req.query['q'] } } , (err, movies) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(movies);
+    }
+  });
+}
+
+let deleteMovie = (req, res) => {
+  Movie.remove({id: req.params['id']}, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send({success: true});
+    }
+  });
+}
+
+export { listMovies, createMovie, filterMovies, deleteMovie };

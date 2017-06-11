@@ -14,8 +14,8 @@ router.post('/api/v1/sign_up', apiV1User.signUpUser);
 router.post('/api/v1/sign_in', apiV1User.signInUser);
 
 router.get('/api/v1/movies', passport.authenticate('jwt', { session: false }), apiV1Movie.listMovies);
-router.get('/api/v1/movies/filter', passport.authenticate('jwt', { session: false }), apiV1Movie.listMovies);
+router.get('/api/v1/movies/filter', passport.authenticate('jwt', { session: false }), apiV1Movie.filterMovies);
 router.post('/api/v1/movies', passport.authenticate('jwt', { session: false }), apiV1Movie.createMovie);
-router.delete('/api/v1/movies/:id', passport.authenticate('jwt', { session: false }), apiV1Movie.createMovie);
+router.delete('/api/v1/movies/:id', passport.authenticate('jwt', { session: false }), apiV1Movie.deleteMovie);
 
 export default router;
