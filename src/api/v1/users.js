@@ -21,8 +21,10 @@ let signInUser = (req, res) => {
       user.comparePassword(req.body.password, (err, isMatch) => {
         if (err) {
           console.log(err);
-        } else {
-          res.send(user).status(200);
+        } else if (!isMatch) {
+          res.send({status: 'Either password or email is not found'});
+        } else if (isMatch) {
+          res.send(user)
         }
       });
     }
