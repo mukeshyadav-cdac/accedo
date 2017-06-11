@@ -34,6 +34,8 @@ userSchema.options.toJSON = {
         delete ret.__v;
         delete ret.email;
         delete ret.password;
+        delete ret.favourites;
+        delete ret.history;
         ret.auth_token = doc.auth_token;
         return ret;
     }

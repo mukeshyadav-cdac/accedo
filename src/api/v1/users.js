@@ -29,6 +29,24 @@ let signInUser = (req, res) => {
   });
 }
 
+let changePassword = (req, res) => {
+  let user = req.user;
+  user.comparePassword(req.body.current_password, (err, isMatch) => {
+    if ( isMatch) {
+      user.password = req.body.new_password;
+      user.save((err, user) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send({status: true});
+        }
+      });
+    } else {
+      res.send({status: 'password is not valid'});
+    }
+  });
+}
+
 let addToHistory = (req, res) => {
   let user = req.user;
   user.history.push(req.params['id']);
@@ -68,4 +86,4 @@ let favourites = (req, res) => {
   res.send({favourites: user.favourites});
 }
 
-export { signUpUser, signInUser, addToHistory, addToFavourite, deleteFromFavourite, history, favourites };
+export { signUpUser, signInUser, addToHistory, addToFavourite, deleteFromFavourite, history, favourites, changePassword };
