@@ -1,15 +1,27 @@
 import express from 'express';
 const router = express.Router();
-//import User from '../../models/movie.js';
+import Movie from '../../models/movie.js';
 
 
 let listMovies = (req, res) => {
-  console.log(req.user)
   if (req.user) {
-    res.send(req.user).send(200);
+    let movies = Movie.find({}, (err, movies) => {
+      res.send({totalCount: movies.length, entries: movies});
+    });
   } else {
     res.send(401);
   }
 }
 
-export { listMovies };
+let createMovie = (req, res) => {
+  let movie = new Movie(req.body);
+  movie.save((err, movie) => {
+    if ( err ) {
+      console.log(err)
+    } else {
+      res.json(movie);
+    }
+  });
+}
+
+export { listMovies, createMovie };

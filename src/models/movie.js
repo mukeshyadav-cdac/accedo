@@ -4,68 +4,53 @@ import config from '../../config.js';
 const Schema = mongoose.Schema;
 
 const movieSchema = new Schema({
-  email: {
-    type: String,
-    unique: true,
-    lowercase: true,
-    required: 'Email must be present',
-    match: [match, 'Invalid email format']
+  title: {
+    type: String
   },
 
-  password: {
+  description: {
+    type: String
+  },
+
+  type: {
+    type: String
+  },
+
+  publishedDate: {
+    type: String
+  },
+
+  availableDate: {
+    type: String
+  },
+
+  metadata: [{value: String, name: String}],
+
+  contents: [{url: String, format: String, width: String, height: String, language: String, duration: String, geoLock: Boolean, id: String}],
+
+  credits: [{role: String, name: String}],
+
+  parentalRatings: [{scheme: String, rating:String}],
+
+  images: [{type: {type: String}, url: String, width: String, height: String, id: String}],
+
+  categories: [{title: String, description: String, id:String}],
+
+  id: {
     type: String,
-    required: 'Password must be present',
-    minlength: [6, 'Password length should be minimum 6 character.']
+    unique: true
   }
 });
 
-userSchema.options.toJSON = {
+movieSchema.options.toJSON = {
     transform: function(doc, ret, options) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
-        delete ret.email;
-        delete ret.password;
-        ret.auth_token = doc.auth_token;
         return ret;
     }
 };
 
-userSchema.pre('save', function(next) {
-  let user = this;
+const Movie = mongoose.model('movie', movieSchema);
 
-  if (!user.isModified('password')) return next();
-
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err)
-    }
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if (err) {
-        return next(err)
-      }
-      user.password = hash;
-      next();
-    });
-  });
-});
-
-userSchema.methods.comparePassword = function(candidatePassword, callback){
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch){
-    if(err){return callback(err)}
-
-    callback(null, isMatch)
-  })
-}
-
-//userSchema.set('toJSON', { virtuals: true });
-
-userSchema.virtual('auth_token')
-  .get(function () {
-    return JWT.sign(this._id, config[process.env.NODE_ENV].JWT_SECRET)
-  });
-
-
-const User = mongoose.model('user', userSchema);
-
-export default User;
+export default Movie;
