@@ -39,10 +39,33 @@ let addToHistory = (req, res) => {
 
 let addToFavourite = (req, res) => {
   let user = req.user;
-  user.favourites.push(req.params['id']);
-  user.save((err, user) => {
+  User.update({ _id: user._id }, { $addToSet: {favourites: req.params['id']}}, (err, user) => {
+    if (err) {
+      console.log(err);
+    }
     res.send({success: true});
   });
 }
 
-export { signUpUser, signInUser, addToHistory, addToFavourite };
+let deleteFromFavourite = (req, res) => {
+  let user = req.user;
+  User.update( {_id: user._id }, { $pullAll: { favourites: [req.params['id']] } }, (err) => {
+    if ( err ) {
+      console.log(err)
+    } else {
+      res.send({success: true});
+    }
+  });
+}
+
+let history = (req, res) => {
+  let user = req.user;
+  res.send({history: user.history});
+}
+
+let favourites = (req, res) => {
+  let  user =  req.user;
+  res.send({favourites: user.favourites});
+}
+
+export { signUpUser, signInUser, addToHistory, addToFavourite, deleteFromFavourite, history, favourites };
