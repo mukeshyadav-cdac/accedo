@@ -13,7 +13,7 @@ mongoose.Promise = global.Promise;
 //mongoose.set('debug', true);
 const app = express();
 
-app.set('port', (config[enviroment].PORT || 6000));
+app.set('port', (process.env.PORT || config[enviroment].DEV_PORT ));
 
 if (enviroment !== 'test') {
   app.use(logger('dev'));
