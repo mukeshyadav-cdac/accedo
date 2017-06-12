@@ -8,9 +8,13 @@ let signUpUser = (req, res) => {
     if (err) {
       console.log(err)
       let errorObject = {}
-      Object.keys(err.errors).forEach(function (key) {
-        errorObject[key] = err.errors[key].message
-      });
+      if ( err.errors ) {
+        Object.keys(err.errors).forEach(function (key) {
+          errorObject[key] = err.errors[key].message
+        });
+      } else {
+        errorObject['errors'] = 'Server Error'
+      }
       res.status(400).send(errorObject);
     } else {
       res.status(200).send(user);

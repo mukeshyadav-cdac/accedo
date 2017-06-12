@@ -15,9 +15,13 @@ let createMovie = (req, res) => {
     if ( err ) {
       console.log(err)
       let errorObject = {}
-      Object.keys(err.errors).forEach(function (key) {
-        errorObject[key] = err.errors[key].message
-      });
+      if (err.errors) {
+        Object.keys(err.errors).forEach(function (key) {
+          errorObject[key] = err.errors[key].message
+        });
+      } else {
+        errorObject['errors'] = 'Serever Error'
+      }
       res.status(400).send(errorObject);
     } else {
       res.status(200).send(movie);
@@ -26,8 +30,6 @@ let createMovie = (req, res) => {
 }
 
 let filterMovies = (req, res) => {
-  console.log('............................')
-  console.log(req.query['q'])
   Movie.find({ $text: { $search: req.query['q'] } } , (err, movies) => {
     if (err) {
       console.log(err);
