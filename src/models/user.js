@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt-nodejs';
 import JWT from 'jsonwebtoken';
 import config from '../../config.js';
+import uniqueValidator  from 'mongoose-unique-validator';
 
 const Schema = mongoose.Schema;
 
@@ -12,6 +13,7 @@ const userSchema = new Schema({
     type: String,
     unique: true,
     lowercase: true,
+    index: true,
     required: 'Email must be present',
     match: [match, 'Invalid email format']
   },
@@ -69,6 +71,7 @@ userSchema.methods.comparePassword = function(candidatePassword, callback){
 }
 
 //userSchema.set('toJSON', { virtuals: true });
+userSchema.plugin(uniqueValidator);
 
 userSchema.virtual('auth_token')
   .get(function () {

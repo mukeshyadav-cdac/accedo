@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import config from '../../config.js';
 import textSearch from 'mongoose-text-search';
+import uniqueValidator  from 'mongoose-unique-validator';
 
 const Schema = mongoose.Schema;
 
@@ -8,6 +9,7 @@ const movieSchema = new Schema({
   title: {
     type: String,
     required: 'Title must be present',
+    index: true,
     text: true
   },
 
@@ -43,6 +45,7 @@ const movieSchema = new Schema({
   id: {
     type: String,
     unique: true,
+    index: true,
     required: 'Id must be present'
   }
 });
@@ -60,6 +63,7 @@ movieSchema.options.toJSON = {
     }
 };
 
+movieSchema.plugin(uniqueValidator);
 movieSchema.plugin(textSearch);
 movieSchema.index({
   title: 'text',
