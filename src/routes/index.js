@@ -14,6 +14,7 @@ router.post('/api/v1/sign_up', apiV1User.signUpUser);
 router.post('/api/v1/sign_in', apiV1User.signInUser);
 router.post('/api/v1/change_password', passport.authenticate('jwt', { session: false }), apiV1User.changePassword);
 router.put('/api/v1/add_to_favourite/:id', passport.authenticate('jwt', { session: false }), apiV1User.addToFavourite);
+router.put('/api/v1/add_to_history/:id', passport.authenticate('jwt', { session: false }), apiV1User.addToHistory);
 router.delete('/api/v1/delete_from_favourite/:id', passport.authenticate('jwt', { session: false }), apiV1User.deleteFromFavourite);
 router.get('/api/v1/history', passport.authenticate('jwt', { session: false }), apiV1User.history);
 router.get('/api/v1/favourites', passport.authenticate('jwt', { session: false }), apiV1User.favourites);

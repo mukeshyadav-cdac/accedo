@@ -100,4 +100,28 @@ describe('User Model: ', () => {
     });
   });
 
+  it('should create history for viewing a movie', (done) => {
+    let user = new User({email: 'abc@gmail.com', password: 'password'});
+    user.save((err, new_user) => {
+      user.history.push('a_new_movie');
+      user.save((err, new_user) => {
+        expect(new_user.history).to.be.an('array').that.include('a_new_movie');
+        expect(new_user.history.length).to.be.equal(1);
+        done();
+      });
+    });
+  });
+
+  it('should create favourite for viewing a movie', (done) => {
+    let user = new User({email: 'abc@gmail.com', password: 'password'});
+    user.save((err, new_user) => {
+      user.favourites.push('a_new_movie');
+      user.save((err, new_user) => {
+        expect(new_user.favourites).to.be.an('array').that.include('a_new_movie');
+        expect(new_user.favourites.length).to.be.equal(1);
+        done();
+      });
+    });
+  });
+
 });

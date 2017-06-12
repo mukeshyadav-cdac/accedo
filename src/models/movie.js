@@ -8,10 +8,12 @@ const movieSchema = new Schema({
   title: {
     type: String,
     required: 'Title must be present',
+    text: true
   },
 
   description: {
-    type: String
+    type: String,
+    text: true
   },
 
   type: {
@@ -30,17 +32,18 @@ const movieSchema = new Schema({
 
   contents: [{url: String, format: String, width: String, height: String, language: String, duration: String, geoLock: Boolean, id: String}],
 
-  credits: [{role: String, name: String}],
+  credits: [{role: String, name: {type: String, text: true}} ],
 
   parentalRatings: [{scheme: String, rating:String}],
 
   images: [{type: {type: String}, url: String, width: String, height: String, id: String}],
 
-  categories: [{title: String, description: String, id:String}],
+  categories: [{title: {type: String, text: true }, description: {type: String, text: true}, id:String}],
 
   id: {
     type: String,
-    unique: true
+    unique: true,
+    required: 'Id must be present'
   }
 });
 
@@ -65,6 +68,7 @@ movieSchema.index({
   'categories.description': 'text',
   'credits.name': 'text'
 });
+
 
 const Movie = mongoose.model('movie', movieSchema);
 
